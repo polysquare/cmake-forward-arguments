@@ -30,10 +30,12 @@ before_cache:
 - polysquare_cleanup
 after_success:
 - polysquare_run coverage/cmake/coverage.py
+before_deploy:
+- polysquare_run deploy/script/before_deploy.py deploy/conan/deploy.py --package=cmake-forward-arguments
 deploy:
   provider: script
   skip_cleanup: true
-  script: polysquare_run deploy/bii/deploy.py --package=cmake-forward-arguments
+  script: ./travis-deploy
   on:
     repo: polysquare/cmake-include-arguments
     branch: master
