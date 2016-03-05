@@ -1,4 +1,4 @@
-# /FowardArguments.cmake
+# /ForwardArguments.cmake
 #
 # Forward input variable-length arguments to child functions.
 #
@@ -7,13 +7,7 @@
 # into a single list so that they can be passed to a child function.
 #
 # See /LICENCE.md for Copyright information
-if (NOT BIICODE)
-
-    set (CMAKE_MODULE_PATH
-         "${CMAKE_CURRENT_LIST_DIR}/bii/deps"
-         "${CMAKE_MODULE_PATH}")
-
-endif (NOT BIICODE)
+include (conanbuildinfo)
 
 include ("smspillaz/cmake-include-guard/IncludeGuard")
 cmake_include_guard (SET_MODULE_PATH)

@@ -1,0 +1,42 @@
+language: cpp
+sudo: false
+cache:
+  directories:
+  - container
+env:
+  matrix:
+  - CMAKE_GENERATOR="Unix Makefiles" CMAKE_VERSION="latest" DEPLOY="1"
+  - CMAKE_GENERATOR="Ninja" CMAKE_VERSION="latest"
+  - CMAKE_GENERATOR="Unix Makefiles" CMAKE_VERSION="3.0"
+  - CMAKE_GENERATOR="Ninja" CMAKE_VERSION="3.0"
+  - CMAKE_GENERATOR="Unix Makefiles" CMAKE_VERSION="latest" COVERAGE="--use-cmake-coverage"
+  global:
+  - secure: Fk6xwsPyHiqDTm6V4qWi/B1JINNXYfk6Y4RLJXlR3uxH84nQD2oB1aPvUmyhOvpeaYW5kIwOMt2nbmgl5pSHXDC8DvBA0cW3F3jHC3Ggyi6O0CMudicKswkHi6ndFBd+/jibqisJdFSoycHRbgKD9knm6L83NQubtQmxewugUbzixbkImKWSkVz+iXNTMcXhq+J1ZK6KEkwu/9+2j8k/jt7NR0e5o9cT1aGtFNzVYtKjQTI9DZ+ZlQQVLkLR/bK/5x8wDNYWy+TkGDK2Zt7CHjvqT6Kb6DMy3E50pc8ZaRL6rSVIEjoTyFwuYCUvPG4Fd03AHXx1lNNSVtfrnjcpR+9bzcmBPKuaA1h82u0UTgV3okNYPC9EgitsAV4fRXoygPjnLUmhp5K9AnH+jgqVMjWHL7phwdxuoe4IMlDvnLUh5iWlVPNbkHlBl8VxcmIJuXhrwbo/OuQKORiQV6ScEScWP5OzJWZkoE+YOxdduceLmYUrVrbj6BrN31Vbr2QrYxbgzVT0POMNeSQTEKA7C/zXAVYG44jo0ADX7DNKqnW9yIgMck/Q951fmXv1eBcMP2dhQ2hf24w8m1+gtfu9kT2xmV1adAlOXGmNzXsBnYZh7p+XXyV1Ul6McX2EnRX18+ORmMrF0mjsQthixqIGbkRXsGTtilPIqlXj6XPNWvI=
+  - secure: KmtfDvnlmnBUtcR0GN/Y6fNyArZ+ylwi+bUA2y8IE5WSmsPbR0aJ96PxRNNMrkuBTmOQ8WCj2UpczaotAbqOciSN9g6IJNaZ9VoZopVFSoYC0DB6KPRKnS/5DHRl6Ipuy9i5OIHfU0HcScELxZFiHj/q2et3iYTFe8Qb+apDDQzz61miFOJVYfNyNh6Toj0fq/IIySBW2SfUkhT5zt0GsScyYYR4xJkIbu/XAIsULoF9DGQYEWka8BSnOJEv8t9oQvCXdryjCq8sO3GW3+sVoGRcXnPg9HtkP2N9vRbiNJv+x7ZOAHA9CZ0tEmYiwyCp6PBVZCiU7kQzddwcoGXUItu1a/2DJ4SPaUGGv3ynJJT57py1K8LoaMqG0D2Nzz3YfvfMhYzuctCy1tL2dbA4r6u0yYf4vuItIQIC6pHVu/zoObuRXIx3MnG/Ga6xcqkIkSg96LlgSs+t2mTGCwyeSaEA0PZM7/vd9OsrWejuTG3LJvoP1SuNDPt5L7QgkUi0hCEOKSjGBTEnPHabiN20RyokQRg4jsU/yuD9UVM1cyudVz2zWDgOq9UxjoyqV2c44JHH7ZiTcsDHtWPaFSTx0dDtH15TuA6Rarwlp0i8TzQAJjrUmXlNz0TXHCmDooyLXeKc7pIeZlWcIMokCZdaOTYcLZ3CpMhGHytA5T76QsE=
+addons:
+  apt:
+    sources:
+    - deadsnakes
+    packages:
+    - python3.4-dev
+install:
+- eval $(curl -LSs --retry 100 --connect-timeout 3 public-travis-scripts.polysquare.org/bootstrap.py
+  | python /dev/stdin -d container -s setup/conan/setup.py -e bash -p /dev/stdout
+  --cmake-version ${CMAKE_VERSION})
+script:
+- polysquare_run check/conan/check.py ${COVERAGE} --cmake-namespace cmake --generator
+  "${CMAKE_GENERATOR}"
+before_cache:
+- polysquare_cleanup
+after_success:
+- polysquare_run coverage/cmake/coverage.py
+before_deploy:
+- polysquare_run deploy/conan/before_deploy.py --package=cmake-forward-arguments
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ./travis-deploy
+  on:
+    repo: polysquare/cmake-include-arguments
+    branch: master
+    condition: "${DEPLOY} = 1"
