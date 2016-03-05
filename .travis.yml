@@ -37,6 +37,6 @@ deploy:
   skip_cleanup: true
   script: ./travis-deploy
   on:
-    repo: polysquare/cmake-include-arguments
+    repo: polysquare/cmake-forward-arguments
     branch: master
     condition: "${DEPLOY} = 1"
