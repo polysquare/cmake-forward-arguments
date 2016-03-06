@@ -7,9 +7,7 @@
 # into a single list so that they can be passed to a child function.
 #
 # See /LICENCE.md for Copyright information
-include (conanbuildinfo)
-
-include ("smspillaz/cmake-include-guard/IncludeGuard")
+include ("cmake/cmake-include-guard/IncludeGuard")
 cmake_include_guard (SET_MODULE_PATH)
 
 include (CMakeParseArguments)

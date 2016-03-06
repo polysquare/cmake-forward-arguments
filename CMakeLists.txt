@@ -6,4 +6,5 @@
 project (CMakeForwardArguments)
 cmake_minimum_required (VERSION 2.8 FATAL_ERROR)
 
-include (conanbuildinfo.cmake)
+include ("${CMAKE_CURRENT_LIST_DIR}/conanbuildinfo.cmake")
+conan_basic_setup ()
