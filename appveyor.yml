@@ -21,7 +21,6 @@ install:
  - ps: wget public-travis-scripts.polysquare.org/bootstrap.py -OutFile bootstrap
  - ps: python bootstrap -d "C:/container" -s setup/conan/setup.py -e powershell -p test-env.ps1 --no-mdl --cmake-version latest
  - ps: . ./test-env
-
 build: false
 
 test_script:
