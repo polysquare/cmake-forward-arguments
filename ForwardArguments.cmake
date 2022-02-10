@@ -7,8 +7,8 @@
 # into a single list so that they can be passed to a child function.
 #
 # See /LICENCE.md for Copyright information
-include ("cmake/cmake-include-guard/IncludeGuard")
-cmake_include_guard (SET_MODULE_PATH)
+
+include_guard()
 
 include (CMakeParseArguments)
 
