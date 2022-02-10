@@ -8,7 +8,6 @@ VERSION = "0.0.5"
 class CMakeForwardArguments(ConanFile):
     name = "cmake-forward-arguments"
     version = os.environ.get("CONAN_VERSION_OVERRIDE", VERSION)
-    requires = ("cmake-include-guard/master@smspillaz/cmake-include-guard", )
     generators = "cmake"
     url = "http://github.com/polysquare/cmake-forward-arguments"
     licence = "MIT"
