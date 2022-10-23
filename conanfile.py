@@ -2,7 +2,7 @@ from conans import ConanFile
 from conans.tools import download, unzip
 import os
 
-VERSION = "0.0.5"
+VERSION = "1.0.0"
 
 
 class CMakeForwardArguments(ConanFile):
